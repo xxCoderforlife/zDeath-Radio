@@ -1,0 +1,18 @@
+Warrior:
+  Name: 'Warrior'
+  NameColor: '147,65,220'
+  isCustomNameVisible: true
+  MaxHealth: 20.0
+  AttackDamage: 1.6
+  MovementSpeed: 0.12
+  FollowRange: 12.0
+  RemoveWhenFarAway: true
+  CanPickUpItems: false
+  spawnChance: 60
+  PotionEffects:
+    - FIRE_RESISTANCE:1200:2
+  Helmet: AIR
+  Chestplate: AIR
+  Leggings: IRON_LEGGINGS
+  Boots: AIR
+  MainHand: FURNACE

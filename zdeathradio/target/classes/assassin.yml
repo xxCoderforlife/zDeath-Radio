@@ -1,0 +1,19 @@
+Assassin:
+  Name: 'Assassin'
+  NameColor: '41,124,20'
+  isCustomNameVisible: true
+  MaxHealth: 10.0
+  AttackDamage: 0.5
+  MovementSpeed: 0.2
+  FollowRange: 120.0
+  RemoveWhenFarAway: true
+  CanPickUpItems: false
+  spawnChance: 80
+  PotionEffects:
+    - DAMAGE_RESISTANCE:120000:1
+  Helmet: AIR
+  Chestplate: IRON_CHESTPLATE
+  Leggings: AIR
+  Boots: AIR
+  MainHand: AIR
+  OffHand: AIR

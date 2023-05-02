@@ -1,0 +1,20 @@
+Zombie:
+  Name: 'Zombie'
+  #Use RGB for Name Color
+  NameColor: '18,185,41'
+  isCustomNameVisible: true
+  MaxHealth: 5.0
+  AttackDamage: 1.0
+  MovementSpeed: 0.2
+  FollowRange: 10.0
+  RemoveWhenFarAway: true
+  CanPickUpItems: false
+  spawnChance: 88
+  PotionEffects:
+    - FIRE_RESISTANCE:1200:2
+  Helmet: AIR
+  Chestplate: AIR
+  Leggings: AIR
+  Boots: LEATHER_BOOTS
+  MainHand: AIR
+  OffHand: SHEILD

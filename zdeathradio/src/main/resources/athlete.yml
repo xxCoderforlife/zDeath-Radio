@@ -1,0 +1,19 @@
+Athlete:
+  Name: 'Athlete'
+  NameColor: '41,124,20'
+  isCustomNameVisible: true
+  MaxHealth: 10.0
+  AttackDamage: 0.5
+  MovementSpeed: 0.38
+  FollowRange: 10.0
+  RemoveWhenFarAway: true
+  CanPickUpItems: false
+  spawnChance: 80
+  PotionEffects:
+    - JUMP:120000:2
+  Helmet: LEATHER_HELMET
+  Chestplate: AIR
+  Leggings: AIR
+  Boots: GOLDEN_BOOTS
+  MainHand: AIR
+  OffHand: SHEILD
