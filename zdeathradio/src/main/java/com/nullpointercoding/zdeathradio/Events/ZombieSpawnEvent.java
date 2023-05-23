@@ -45,7 +45,7 @@ public class ZombieSpawnEvent implements Listener {
     @EventHandler(priority = org.bukkit.event.EventPriority.HIGHEST)
     public void onZombieSpawn(CreatureSpawnEvent e) {
         if (e.getEntity() instanceof Zombie) {
-            if (spawnLimit <= Bukkit.getWorld("world").getEntities().size()) {
+            if (spawnLimit >= e.getEntity().getWorld().getEntitiesByClass(Zombie.class).size()) {
                 e.setCancelled(true);
                 return;
             }
