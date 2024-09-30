@@ -73,10 +73,10 @@ public class ZombieHitEvent implements Listener {
                 p.sendTitlePart(TitlePart.SUBTITLE, infectedMessageSubTitle);
                 p.sendTitlePart(TitlePart.TITLE, infectedMessageTitle);
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_BREATH, (float) 10.0, (float) 1.3);
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 60 * 3, 2));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 60 * 3, 2));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 60 * 3, 2));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 20 * 60 * 3, 2));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 20 * 60 * 3, 2));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 60 * 3, 3));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 20 * 60 * 3, 3));
                 infectedPlayers.add(p.getUniqueId());
                 new BukkitRunnable() {
                     @Override
@@ -107,7 +107,7 @@ public class ZombieHitEvent implements Listener {
                 p.sendMessage(m.getPrefix().append(Component.text("You have ").append(en).append(Component.text("a ").append(z.customName()))));
 
                 z.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 2));
-                z.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 2999999, 2));
+                z.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 2999999, 2));
 
                 final TextComponent enragedName = Component.text("ENRAGED ", TextColor.color(203, 31, 31), TextDecoration.BOLD).append(z.customName());
                 z.customName(enragedName);

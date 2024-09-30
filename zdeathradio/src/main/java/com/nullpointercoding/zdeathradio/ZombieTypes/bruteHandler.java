@@ -59,8 +59,8 @@ public class bruteHandler {
         }
         for(String s : zCM.getBruteConfig().getStringList("Brute.PotionEffects")){
             if(s == null){
-                zCM.getBruteConfig().set("Brute.PotionEffects", "INCREASE_DAMAGE:1:1");
-                z.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1, 1));
+                zCM.getBruteConfig().set("Brute.PotionEffects", "STRENGTH:1:1");
+                z.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 1, 1));
 
             }else{
             String[] split = s.split(":");

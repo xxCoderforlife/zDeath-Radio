@@ -84,8 +84,8 @@ public class suicideBomberHandler {
         }
         for (String s : zCM.getSuicideBomberConfig().getStringList("SuicideBomber.PotionEffects")) {
             if (s == null) {
-                zCM.getSuicideBomberConfig().set("SuicideBomber.PotionEffects", "INCREASE_DAMAGE:1:1");
-                z.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 1, 1));
+                zCM.getSuicideBomberConfig().set("SuicideBomber.PotionEffects", "STRENGTH:1:1");
+                z.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 1, 1));
 
             } else {
                 String[] split = s.split(":");

@@ -81,7 +81,7 @@ public class ZombieSpawnEvent implements Listener {
                 return;
 
             }
-            z.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, z.getEyeLocation().add(0, 1, 0), 3);
+            z.getWorld().spawnParticle(Particle.ANGRY_VILLAGER, z.getEyeLocation().add(0, 1, 0), 3);
             spawnCount++;
 
         } else if (e.getEntity() instanceof Creeper) {

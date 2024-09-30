@@ -67,7 +67,7 @@ public class CustomRecipes {
         lore.add(Component.space());
         lore.add(Component.text("You can eat this now"));
         fMeta.lore(lore);
-        fMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
+        fMeta.addEnchant(Enchantment.SHARPNESS, 1, true);
         fur.setItemMeta(fMeta);
         return fur;
     }

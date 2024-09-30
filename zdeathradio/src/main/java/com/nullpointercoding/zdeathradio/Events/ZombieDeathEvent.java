@@ -45,7 +45,7 @@ public class ZombieDeathEvent implements Listener{
 	ItemStack box = new ItemStack(Material.SHULKER_BOX);
 	ItemStack bottle = new ItemStack(Material.EXPERIENCE_BOTTLE);
 	ItemStack fox = new ItemStack(Material.FOX_SPAWN_EGG);
-	ItemStack wire = new ItemStack(Material.TRIPWIRE);
+	ItemStack rbed = new ItemStack(Material.RED_BED);
 
 
 	protected HashMap<ItemStack,String> itemList = new HashMap<>();
@@ -60,7 +60,7 @@ public class ZombieDeathEvent implements Listener{
 		itemList.put(box, "box");
 		itemList.put(bottle, "bottle");
 		itemList.put(fox, "fox");
-		itemList.put(wire, "wire");
+		itemList.put(rbed, "rbed");
 
 	}
 
@@ -137,7 +137,7 @@ public class ZombieDeathEvent implements Listener{
 				} else if (getRandom().nextInt(100) < 58) {
 					z.getWorld().dropItemNaturally(z.getLocation(), fox);
 				} else if (getRandom().nextInt(100) < 42) {
-					z.getWorld().dropItemNaturally(z.getLocation(), wire);
+					z.getWorld().dropItemNaturally(z.getLocation(), rbed);
 				}else if (getRandom().nextInt(100) < 22) {
 					z.getWorld().dropItemNaturally(z.getLocation(), totem);
 				}
