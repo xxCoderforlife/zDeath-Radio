@@ -2,12 +2,13 @@ package com.nullpointercoding.zdeathradio.Events;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Spider;
+import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -84,6 +85,9 @@ public class ZombieSpawnEvent implements Listener {
             z.getWorld().spawnParticle(Particle.ANGRY_VILLAGER, z.getEyeLocation().add(0, 1, 0), 3);
             spawnCount++;
 
+
+            //TODO: Figure out a better way to retry for a zombie - like store LOC of spawned entity then send to function to retry -- something like that
+
         } else if (e.getEntity() instanceof Creeper) {
             Creeper cr = (Creeper) e.getEntity();
             cr.getWorld().spawnEntity(cr.getLocation(), EntityType.ZOMBIE);
@@ -94,6 +98,14 @@ public class ZombieSpawnEvent implements Listener {
             cr.remove();
         } else if (e.getEntity() instanceof Spider) {
             Spider cr = (Spider) e.getEntity();
+            cr.getWorld().spawnEntity(cr.getLocation(), EntityType.ZOMBIE);
+            cr.remove();
+        } else if(e.getEntity() instanceof Witch){
+            Witch cr = (Witch) e.getEntity();
+            cr.getWorld().spawnEntity(cr.getLocation(), EntityType.ZOMBIE);
+            cr.remove();
+        }else if(e.getEntity() instanceof Enderman){
+            Enderman cr = (Enderman) e.getEntity();
             cr.getWorld().spawnEntity(cr.getLocation(), EntityType.ZOMBIE);
             cr.remove();
         }

@@ -2,6 +2,8 @@ package com.nullpointercoding.zdeathradio.Utils;
 
 
 
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -58,12 +60,13 @@ public class Messages {
     }
 
     public void splashMessage(){
-        consoleMessage("§a____ ___   ___");
-        consoleMessage("§a|_  /|   \\ | _ \\");
-        consoleMessage(" §a/ / | |) ||   /");
-        consoleMessage("§a/___||___/ |_|_\\");
-        consoleMessage(" ");
-        consoleMessage("§c§cA Plugin Made By xxCoderforlife - https://NullPointer-Coding.dev");
+        Logger logger = Bukkit.getLogger();
+        logger.info("§a____ ___   ___");
+        logger.info("§a|_  /|   \\ | _ \\");
+        logger.info(" §a/ / | |) ||   /");
+        logger.info("§a/___||___/ |_|_\\");
+        logger.info(" ");
+        logger.info("§c§cA Plugin Made By xxCoderforlife - https://NullPointer-Coding.dev");
         
         
          

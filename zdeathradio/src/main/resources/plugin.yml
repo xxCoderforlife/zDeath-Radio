@@ -1,6 +1,6 @@
 name: zDeath-Radio
 api: "[1.13]"
-version: 0.0.5
+version: 0.0.6
 main: com.nullpointercoding.zdeathradio.Main
 api-version: 1.13
 authors: [xxCoderforlife]
