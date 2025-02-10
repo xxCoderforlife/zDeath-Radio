@@ -2,80 +2,94 @@ package com.nullpointercoding.zdeathradio;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nullpointercoding.zdeathradio.Commands.Commands;
-import com.nullpointercoding.zdeathradio.Commands.TabCommands;
-import com.nullpointercoding.zdeathradio.Events.EatingEvent;
-import com.nullpointercoding.zdeathradio.Events.ZombieBlockBreak;
-import com.nullpointercoding.zdeathradio.Events.ZombieDeathEvent;
-import com.nullpointercoding.zdeathradio.Events.ZombieExplodeEvent;
-import com.nullpointercoding.zdeathradio.Events.ZombieHitEvent;
-import com.nullpointercoding.zdeathradio.Events.ZombieSpawnEvent;
-import com.nullpointercoding.zdeathradio.Utils.CustomRecipes;
-import com.nullpointercoding.zdeathradio.Utils.Messages;
-import com.nullpointercoding.zdeathradio.Utils.ZombieConfigManager;
+import com.nullpointercoding.Zombies.ZombieGC;
+import com.nullpointercoding.Zombies.ZombieHandler;
+import com.nullpointercoding.zdeathradio.Commands.PlayerCommands;
+import com.nullpointercoding.zdeathradio.Commands.SysCommands;
+import com.nullpointercoding.zdeathradio.Economy.EcoCommands;
+import com.nullpointercoding.zdeathradio.Economy.VaultHook;
+import com.nullpointercoding.zdeathradio.Economy.PlayerAccount.PlayerAccountCommands;
+import com.nullpointercoding.zdeathradio.Messages.Messages;
+import com.nullpointercoding.zdeathradio.PlayerEvents.PlayerEvents;
 
-public class Main extends JavaPlugin{
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+
+public class Main extends JavaPlugin {
 
     private static Main pl;
-
-    private ZombieConfigManager zCM;
+    private static ZombieGC zGC;
+    private static Messages messages;
+    private static Economy econ = null;
+    private static Chat chat = null;
+    private File BankDataFolder = new File(getDataFolder() + File.separator + "Bank Data");
+    private File PlayerDataFolder;
+    private File PlayerConfigFolder;
+    private File PlayerAccountFolder;
 
     private File cFile;
     private FileConfiguration cFileConfig;
-    private Messages m;
-
-    private CustomRecipes cr;
 
     @Override
-    public void onEnable(){
+    public void onEnable() {
         pl = this;
+        registerEcon();
         createConfigFile();
-        zCM = new ZombieConfigManager();
-        getZombieConfigManager().createConfigs();
-        cr = new CustomRecipes();
-        getCustomRecipes().addRecipes();
         registerEvents();
-    }
-    @Override
-    public void onLoad(){
-        m = new Messages();
-        m.splashMessage();
 
-    }
-    @Override
-    public void onDisable(){
+        if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getPluginMeta().getDescription()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        setupChat();
     }
 
-    public static Main getInstance(){
+    @Override
+    public void onDisable() {
+    }
+
+    public static Main getInstance() {
         return pl;
     }
 
-    public ZombieConfigManager getZombieConfigManager(){
-        return zCM;
+    private void registerEvents() {
+        registerMessages();
+        getServer().getPluginManager().registerEvents(new ZombieHandler(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+        getCommand("deathadmin").setExecutor(new SysCommands());
+        getCommand("deathplayer").setExecutor(new PlayerCommands());
+        getCommand("economy").setExecutor(new EcoCommands());
+        getCommand("account").setExecutor(new PlayerAccountCommands());
+
+        createDataFolders();
+
+        //
+        // HEY! Always keep the ZombieGC last in the registerEvents() method. It will
+        // not work if it is not last.
+        registerZombieGC();
+        //
+
     }
 
-    public CustomRecipes getCustomRecipes(){
-        return cr;
+    private void registerMessages() {
+        messages = new Messages();
     }
 
-    private void registerEvents(){
-        getServer().getPluginManager().registerEvents(new ZombieSpawnEvent(), this);
-        getServer().getPluginCommand("zdeathradio").setExecutor(new Commands());
-        getServer().getPluginCommand("zdeathradio").setTabCompleter(new TabCommands());
-        getServer().getPluginManager().registerEvents(new ZombieDeathEvent(), this);
-        getServer().getPluginManager().registerEvents(new ZombieHitEvent(), this);
-        getServer().getPluginManager().registerEvents(new EatingEvent(), this);
-        getServer().getPluginManager().registerEvents(new ZombieBlockBreak(), this);
-        getServer().getPluginManager().registerEvents(new ZombieExplodeEvent(), this);
+    private void registerZombieGC() {
+        zGC = new ZombieGC();
     }
 
-    private void createConfigFile(){
+    private void createConfigFile() {
         cFile = new File(getDataFolder(), "config.yml");
-        if(!(cFile.exists())){
+        if (!(cFile.exists())) {
             cFile.getParentFile().mkdirs();
             saveResource("config.yml", false);
         }
@@ -83,12 +97,81 @@ public class Main extends JavaPlugin{
 
     }
 
-    private void loadConfigFile(){
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+
+    private void loadConfigFile() {
         cFileConfig = new YamlConfiguration();
-        try{
+        try {
             cFileConfig.load(cFile);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public static ZombieGC getZombieGC() {
+        return zGC;
+    }
+
+    public Messages getMessages() {
+        return messages;
+    }
+    public static Economy getEconomy() {
+        return econ;
+    }
+
+    public static Chat getChat() {
+        return chat;
+    }
+    private void registerEcon() {
+        Bukkit.getServer().getServicesManager().register(Economy.class, new VaultHook(), this,
+                ServicePriority.Highest);
+    }
+
+    private void createDataFolders(){
+        PlayerDataFolder = new File(getDataFolder() + File.separator + "Player Data");
+        PlayerConfigFolder = new File(getDataFolder() + File.separator + "Player Configs");
+        PlayerAccountFolder = new File(getDataFolder() + File.separator + "Player Accounts");
+
+        if (!PlayerDataFolder.exists()) {
+            PlayerDataFolder.mkdirs();
+            Bukkit.getConsoleSender().sendMessage("§aPlayer Data folder has been created!");
+        }
+        if (!PlayerConfigFolder.exists()) {
+            PlayerConfigFolder.mkdirs();
+            Bukkit.getConsoleSender().sendMessage("§aPlayer Configs folder has been created!");
+        }
+        if (!PlayerAccountFolder.exists()) {
+            PlayerAccountFolder.mkdirs();
+            Bukkit.getConsoleSender().sendMessage("§aPlayer Accounts folder has been created!");
+        }
+    }
+
+    public File getPlayerDataFolder() {
+        return PlayerDataFolder;
+    }   
+
+    public File getPlayerConfigFolder() {
+        return PlayerConfigFolder;
+    }
+
+    public File getPlayerAccountFolder() {
+        return PlayerAccountFolder;
+    }   
+
 }

@@ -1,17 +1,35 @@
 name: zDeath-Radio
 api: "[1.13]"
-version: 0.0.6
+version: 0.0.7
 main: com.nullpointercoding.zdeathradio.Main
 api-version: 1.13
 authors: [xxCoderforlife]
 load: POSTWORLD
+
 #COMMANDS
 commands:
-  zdeathradio:
-    permission: zdeathradio.admin
-    description: Root Command For zDeath-Radio
-    usage: /zdeathradio
-    aliases: [ zdr ]
+  deathplayer:
+    permission: zdeathradio.playercommand
+    description: Base Command For All Players.
+    usage: /deathplayer
+    aliases: [ deathp, dp, zdp ]
+  deathadmin:
+    permission: zdeathradio.admincommand
+    description: Base Admin Command For All Admins.
+    usage: /deathadmin
+    aliases: [ zda, deatha, da ]
+  economy:
+    permission: zdeathradio.econ.admin
+    description: Command for zDeath-Radio Economy
+    usage: /economy
+    aliases: [ econ, eco ]
+  account:
+    permission: zdeathradio.player.account
+    description: Command for zDeath-Radio Account
+    usage: /account
+    aliases: [ acc, acco ]
+
+#PERMISSIONS
 permissions:
   zdeathradio.admin:
     description: Allows access to all zDeath-Radio commands
