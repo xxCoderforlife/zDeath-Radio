@@ -9,8 +9,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.nullpointercoding.Zombies.ZombieGC;
-import com.nullpointercoding.Zombies.ZombieHandler;
 import com.nullpointercoding.zdeathradio.Commands.PlayerCommands;
 import com.nullpointercoding.zdeathradio.Commands.SysCommands;
 import com.nullpointercoding.zdeathradio.Economy.EcoCommands;
@@ -18,6 +16,8 @@ import com.nullpointercoding.zdeathradio.Economy.VaultHook;
 import com.nullpointercoding.zdeathradio.Economy.PlayerAccount.PlayerAccountCommands;
 import com.nullpointercoding.zdeathradio.Messages.Messages;
 import com.nullpointercoding.zdeathradio.PlayerEvents.PlayerEvents;
+import com.nullpointercoding.zdeathradio.Zombies.ZombieGC;
+import com.nullpointercoding.zdeathradio.Zombies.ZombieHandler;
 
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;

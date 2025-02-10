@@ -1,4 +1,4 @@
-package com.nullpointercoding.Zombies;
+package com.nullpointercoding.zdeathradio.Zombies;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

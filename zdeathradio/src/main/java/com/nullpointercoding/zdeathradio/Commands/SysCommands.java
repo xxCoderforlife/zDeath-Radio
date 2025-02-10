@@ -11,8 +11,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
-import com.nullpointercoding.Zombies.ZombieGC;
 import com.nullpointercoding.zdeathradio.Main;
+import com.nullpointercoding.zdeathradio.Zombies.ZombieGC;
 
 import net.kyori.adventure.text.Component;
 

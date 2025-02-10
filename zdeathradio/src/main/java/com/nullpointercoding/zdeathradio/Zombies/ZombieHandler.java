@@ -1,4 +1,4 @@
-package com.nullpointercoding.Zombies;
+package com.nullpointercoding.zdeathradio.Zombies;
 
 import java.util.Arrays;
 import java.util.HashMap;

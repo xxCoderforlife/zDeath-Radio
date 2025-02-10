@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.nullpointercoding.Zombies.ZombieHandler;
 import com.nullpointercoding.zdeathradio.Main;
+import com.nullpointercoding.zdeathradio.Zombies.ZombieHandler;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
