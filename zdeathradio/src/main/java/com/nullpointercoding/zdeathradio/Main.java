@@ -29,7 +29,7 @@ public class Main extends JavaPlugin {
     private static Messages messages;
     private static Economy econ = null;
     private static Chat chat = null;
-    private File BankDataFolder = new File(getDataFolder() + File.separator + "Bank Data");
+    private File BankDataFolder;
     private File PlayerDataFolder;
     private File PlayerConfigFolder;
     private File PlayerAccountFolder;
@@ -147,6 +147,7 @@ public class Main extends JavaPlugin {
         PlayerDataFolder = new File(getDataFolder() + File.separator + "Player Data");
         PlayerConfigFolder = new File(getDataFolder() + File.separator + "Player Configs");
         PlayerAccountFolder = new File(getDataFolder() + File.separator + "Player Accounts");
+        BankDataFolder = new File(getDataFolder() + File.separator + "Bank Data");
 
         if (!PlayerDataFolder.exists()) {
             PlayerDataFolder.mkdirs();
@@ -159,6 +160,10 @@ public class Main extends JavaPlugin {
         if (!PlayerAccountFolder.exists()) {
             PlayerAccountFolder.mkdirs();
             Bukkit.getConsoleSender().sendMessage("§aPlayer Accounts folder has been created!");
+        }
+        if (!BankDataFolder.exists()) {
+            BankDataFolder.mkdirs();
+            Bukkit.getConsoleSender().sendMessage("§aBank Data folder has been created!");
         }
     }
 

@@ -54,11 +54,8 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
         autoBroadcast.startBroadcast();
-        e.joinMessage(Component.text(" [").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE)
-                .append(Component.text("+").decorate(TextDecoration.BOLD).color(NamedTextColor.GREEN))
-                .append(Component.text("] ").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE))
-                .append(Component.text(p.getName()).decorate(TextDecoration.BOLD).color(NamedTextColor.GOLD)));
 
         if (Bukkit.getOnlinePlayers().size() == 1) {
             p.sendMessage(Component.text("Welcome to the server! You are the only one here!"));
@@ -84,12 +81,9 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        autoBroadcast.stopBroadcast();
-        e.quitMessage(Component.text(" [").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE)
-                .append(Component.text("-").decorate(TextDecoration.BOLD).color(NamedTextColor.DARK_RED))
-                .append(Component.text("] ").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE))
-                .append(Component.text(p.getName()).decorate(TextDecoration.BOLD).color(NamedTextColor.GOLD)));
 
+        autoBroadcast.stopBroadcast();
+        
         if (Bukkit.getOnlinePlayers().size() == 1) {
             p.sendMessage(Component.text("You are the only one left on the server!"));
         }

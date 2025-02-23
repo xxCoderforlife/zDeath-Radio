@@ -26,6 +26,12 @@ public class Messages {
     private final TextComponent deathAdminPrefixShort = Component.text("[").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE)
         .append(Component.text("DA").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD))
         .append(Component.text("] ").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE));
+    private final TextComponent deathBankPrefix = Component.text("[").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE)
+        .append(Component.text("DeathBank").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD))
+        .append(Component.text("] ").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE));
+    private final TextComponent deathBankPrefixShort = Component.text("[").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE)
+        .append(Component.text("DB").color(NamedTextColor.BLUE).decorate(TextDecoration.BOLD))
+        .append(Component.text("] ").decorate(TextDecoration.BOLD).color(NamedTextColor.WHITE));
     private ConsoleCommandSender console = Bukkit.getConsoleSender();
     
     public void logZombieSpawn(EntityType et, Location loc){
@@ -56,5 +62,11 @@ public class Messages {
     }
     public final TextComponent getDeathAdminPrefixShort(){
         return deathAdminPrefixShort;
+    }
+    public final TextComponent getDeathBankPrefix(){
+        return deathBankPrefix;
+    }
+    public final TextComponent getDeathBankPrefixShort(){
+        return deathBankPrefixShort;
     }
 }

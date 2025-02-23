@@ -2,18 +2,23 @@ package com.nullpointercoding.zdeathradio.Economy;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title.Times;
+import net.kyori.adventure.title.TitlePart;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.nullpointercoding.zdeathradio.Main;
 import com.nullpointercoding.zdeathradio.FileManager.PlayerConfigManager;
 import com.nullpointercoding.zdeathradio.FileManager.Bank.BankConfigManager;
 import com.nullpointercoding.zdeathradio.Messages.Messages;
@@ -94,15 +99,28 @@ public class VaultHook implements Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
         Player onlinePlayer = Bukkit.getPlayer(offlinePlayer.getUniqueId());
+        Component deathBankPrefix = messages.getDeathBankPrefix();
         if (!(hasAccount(offlinePlayer))) {
             PCM = new PlayerConfigManager(offlinePlayer.getUniqueId().toString());
             PCM.updatePlayerDataFile((Player)offlinePlayer);
-            messages.sendConsoleMessage(Component.text("Player account created for " + offlinePlayer.getName()).color(NamedTextColor.GREEN));
-            onlinePlayer.sendMessage(Component.text("Creating Account for " + offlinePlayer.getName()).color(NamedTextColor.GREEN));
+            messages.sendConsoleMessage(deathBankPrefix.append(Component.text("Player account created for " + offlinePlayer.getName()).color(NamedTextColor.GREEN)));
+            onlinePlayer.sendTitlePart(TitlePart.TITLE, Component.text("Welcome!~ " + onlinePlayer.getUniqueId()).color(NamedTextColor.AQUA));
+            onlinePlayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("Creating you an account... one sec").color(NamedTextColor.GREEN));
+            onlinePlayer.sendTitlePart(TitlePart.TIMES, Times.times(Duration.ofMillis(20), Duration.ofMillis(40), Duration.ofMillis(20)));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    onlinePlayer.sendTitlePart(TitlePart.TITLE, Component.text("Account Created!").color(NamedTextColor.AQUA));
+                    onlinePlayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("You can now access your account - /account").color(NamedTextColor.GREEN));
+                    onlinePlayer.sendTitlePart(TitlePart.TIMES, Times.times(Duration.ofMillis(20), Duration.ofMillis(40), Duration.ofMillis(20)));
+                }
+            }.runTaskLater(Main.getInstance(), 40L);
             return true;
         } else {
-            onlinePlayer.sendMessage(Component.text(offlinePlayer.getUniqueId() + " is loggin in!").color(NamedTextColor.GOLD));
-            onlinePlayer.sendMessage(Component.text("Weclome Back! " + offlinePlayer.getName()).color(NamedTextColor.GREEN));
+            onlinePlayer.sendTitlePart(TitlePart.TITLE, Component.text("Welcome Back User: " + onlinePlayer.getUniqueId()).color(NamedTextColor.AQUA));
+            onlinePlayer.sendTitlePart(TitlePart.SUBTITLE, Component.text("You have been logged in.").color(NamedTextColor.GREEN));
+            onlinePlayer.sendTitlePart(TitlePart.TIMES, Times.times(Duration.ofMillis(20), Duration.ofMillis(40), Duration.ofMillis(20)));
+            messages.sendConsoleMessage(deathBankPrefix.append(Component.text("User " + offlinePlayer.getUniqueId() + " is logging in.").color(NamedTextColor.RED)));
             return false;
         }
     }
