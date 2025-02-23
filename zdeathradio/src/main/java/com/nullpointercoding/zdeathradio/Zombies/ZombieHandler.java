@@ -97,6 +97,7 @@ public class ZombieHandler implements Listener {
         }
     }
 
+    @SuppressWarnings("unused") //TODO: Implement this method in the future.
     private void spawnCustomZombie() {
         if (spawnTask != null && !spawnTask.isCancelled()) {
             Bukkit.getConsoleSender().sendMessage("Wave Spawn task is already running.");

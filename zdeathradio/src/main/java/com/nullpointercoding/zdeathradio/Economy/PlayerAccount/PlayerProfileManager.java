@@ -33,7 +33,9 @@ import com.nullpointercoding.zdeathradio.FileManager.PlayerConfigManager;
 import com.nullpointercoding.zdeathradio.FileManager.Bank.BankAccountGUI;
 import com.nullpointercoding.zdeathradio.FileManager.Bank.BankAccountGUI.AccountType;
 import com.nullpointercoding.zdeathradio.Utils.BlankSpaceFiller;
+import com.nullpointercoding.zdeathradio.Utils.CustomInvFunctions;
 
+import io.papermc.paper.datacomponent.item.CustomModelData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -73,71 +75,93 @@ public class PlayerProfileManager implements Listener {
         }
         e.setCancelled(true);
         ItemStack clicked = e.getCurrentItem();
-        if (clicked.getItemMeta().displayName().equals(requestPayMent().getItemMeta().displayName())) {
-            if (whoClicked == target) {
+
+        // List of item stacks and their corresponding actions
+        List<ItemStack> items = List.of(
+            requestPayMent(),
+            payPlayer(),
+            setBounty(),
+            backToPlayers(),
+            playerHead(),
+            playerKills(whoClicked),
+            cashOnPerson(whoClicked),
+            bankedCash(whoClicked),
+            playerHealth(),
+            token(whoClicked),
+            playerZombieKills(whoClicked)
+        );
+
+        // List of corresponding actions
+        List<Runnable> actions = List.of(
+            () -> {
+                if (whoClicked.getUniqueId().equals(target.getUniqueId())) {
+                    sendPlayerBackOtherPlayersPage(whoClicked);
+                    whoClicked.sendMessage(Component.text("§cYou can't request payment from yourself!"));
+                    whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
+                    return;
+                }
+                BankAccountGUI bankGUI = new BankAccountGUI(target);
+                bankGUI.setIsDespoisting(true, AccountType.PLAYER);
+                bankGUI.openGUI(whoClicked);
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            },
+            () -> {
+                if (whoClicked.getUniqueId().equals(target.getUniqueId())) {
+                    sendPlayerBackOtherPlayersPage(whoClicked);
+                    whoClicked.sendMessage(Component.text("§cYou can't pay yourself!"));
+                    whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
+                    return;
+                }
+                BankAccountGUI bankGUI = new BankAccountGUI(target);
+                bankGUI.setIsDespoisting(false, AccountType.PLAYER);
+                bankGUI.openGUI(whoClicked);
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            },
+            () -> {
+                if (whoClicked.getUniqueId().equals(target.getUniqueId())) {
+                    sendPlayerBackOtherPlayersPage(whoClicked);
+                    whoClicked.sendMessage(Component.text("§cYou can't set a bounty on yourself!"));
+                    whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
+                    return;
+                }
+                BankAccountGUI bankGUI = new BankAccountGUI(target);
+                bankGUI.setIsDespoisting(true, AccountType.BOUNTY);
+                bankGUI.openGUI(whoClicked);
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
+            },
+            () -> {
                 sendPlayerBackOtherPlayersPage(whoClicked);
-                whoClicked.sendMessage(Component.text("§cYou can't request payment from yourself!"));
-                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
-                return;
+                whoClicked.playSound(whoClicked, Sound.ITEM_ARMOR_EQUIP_LEATHER, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT_ON_FIRE, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT_ON_FIRE, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_BURP, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_VILLAGER_YES, 1.0f, 1.0f);
+            },
+            () -> {
+                whoClicked.playSound(whoClicked, Sound.ENTITY_ZOMBIE_DEATH, SoundCategory.AMBIENT, 1.0f, 1.0f);
             }
-            BankAccountGUI bankGUI = new BankAccountGUI(target);
-            bankGUI.setIsDespoisting(true, AccountType.PLAYER);
-            bankGUI.openGUI(whoClicked);
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-        }
-        if (clicked.getItemMeta().displayName().equals(payPlayer().getItemMeta().displayName())) {
-            if (whoClicked == target) {
-                sendPlayerBackOtherPlayersPage(whoClicked);
-                whoClicked.sendMessage(Component.text("§cYou can't pay yourself!"));
-                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
-                return;
+        );
+
+        // Iterate over the items and actions
+        for (int i = 0; i < items.size(); i++) {
+            if (CustomInvFunctions.areItemStacksEqual(clicked, items.get(i))) {
+                actions.get(i).run();
+                break;
             }
-            BankAccountGUI bankGUI = new BankAccountGUI(target);
-            bankGUI.setIsDespoisting(false, AccountType.PLAYER);
-            bankGUI.openGUI(whoClicked);
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-        }
-        if (clicked.getItemMeta().displayName().equals(setBounty().getItemMeta().displayName())) {
-            if (whoClicked == target) {
-                sendPlayerBackOtherPlayersPage(whoClicked);
-                whoClicked.sendMessage(Component.text("§cYou can't set a bounty on yourself!"));
-                whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT, 1.0f, 1.0f);
-                return;
-            }
-            BankAccountGUI bankGUI = new BankAccountGUI(target);
-            bankGUI.setIsDespoisting(true, AccountType.BOUNTY);
-            bankGUI.openGUI(whoClicked);
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
-        }
-        if (clicked.getItemMeta().displayName().equals(backToPlayers().getItemMeta().displayName())) {
-            sendPlayerBackOtherPlayersPage(whoClicked);
-            whoClicked.playSound(whoClicked, Sound.ITEM_ARMOR_EQUIP_LEATHER, 1.0f, 1.0f);
-        }
-        if (clicked.getItemMeta().displayName().equals(playerHead().getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT_ON_FIRE, 1.0f, 1.0f);
-        }
-        if (clicked.getItemMeta().displayName().equals(playerKills(whoClicked).getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_HURT_ON_FIRE, 1.0f, 1.0f);
-
-        }
-        if (clicked.getItemMeta().displayName().equals(cashOnPerson(whoClicked).getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-
-        }
-        if (clicked.getItemMeta().displayName().equals(bankedCash(whoClicked).getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-
-        }
-        if (clicked.getItemMeta().displayName().equals(playerHealth().getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_PLAYER_BURP, 1.0f, 1.0f);
-
-        }
-        if (clicked.getItemMeta().displayName().equals(token(whoClicked).getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_VILLAGER_YES, 1.0f, 1.0f);
-
-        }
-        if (clicked.getItemMeta().displayName().equals(playerZombieKills(whoClicked).getItemMeta().displayName())) {
-            whoClicked.playSound(whoClicked, Sound.ENTITY_ZOMBIE_DEATH, SoundCategory.AMBIENT, 1.0f, 1.0f);
         }
     }
 
@@ -148,7 +172,7 @@ public class PlayerProfileManager implements Listener {
         List<Component> lore = new ArrayList<Component>();
         lore.add(Component.text("§7§oClick to request payment from a player"));
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/d7d7f8fd87fe7e34f9113dd385aab7b24ef221c19d455175b2578af7ff46eecf");
         meta.setPlayerProfile(profile);
         meta.lore(lore);
@@ -177,7 +201,7 @@ public class PlayerProfileManager implements Listener {
         meta.displayName(Component.text("§a§lPay Player"));
         List<Component> lore = new ArrayList<Component>();
         lore.add(Component.text("§7§oClick to pay a player"));
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/d7d7f8fd87fe7e34f9113dd385aab7b24ef221c19d455175b2578af7ff46eecf");
         meta.setPlayerProfile(profile);
         meta.lore(lore);
@@ -193,7 +217,7 @@ public class PlayerProfileManager implements Listener {
         lore.add(Component.text("§7§oClick to set a bounty on a player"));
         meta.lore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/2c57e391e36801da12714cf7bcaed71e2c57fde4815afb692445f2b1393cd520");
         meta.setPlayerProfile(profile);
         fire.setItemMeta(meta);
@@ -237,7 +261,7 @@ public class PlayerProfileManager implements Listener {
                 + target.getAttribute(Attribute.MAX_HEALTH).getBaseValue() + " health"));
         meta.lore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/fe7a810d2112275cc1821dcc6e29da3d2b8fc659af7290a3cb70be536ae2040a");
         meta.setPlayerProfile(profile);
         head.setItemMeta(meta);
@@ -254,7 +278,7 @@ public class PlayerProfileManager implements Listener {
         lore.add(Component.text("Cash: " + Main.getEconomy().getBalance(target)));
         lore.add(Component.text("Your Cash: " + Main.getEconomy().getBalance((Player) whoClicked)));
         meta.lore(lore);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/99e77fae5313bac19bf14577d50093e4738ebd70fd54a4de1a27475d0ec9538f");
         meta.setPlayerProfile(profile);
         item.setItemMeta(meta);
@@ -272,7 +296,7 @@ public class PlayerProfileManager implements Listener {
         lore.add(Component.text("Banked Cash: " + Main.getEconomy().bankBalance(target.getUniqueId().toString()).balance));
         lore.add(Component.text("Your Banked Cash: " + Main.getEconomy().bankBalance(whoClicked.getUniqueId().toString()).balance));
         meta.lore(lore);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/b25b27ce62ca88743840a95d1c39868f43ca60696a84f564fbd7dda259be00fe");
         meta.setPlayerProfile(profile);
         item.setItemMeta(meta);
@@ -289,7 +313,7 @@ public class PlayerProfileManager implements Listener {
         lore.add(Component.text("Player Kills: " + target.getStatistic(org.bukkit.Statistic.PLAYER_KILLS)));
         lore.add(Component.text("Your Player Kills: " + whoClicked.getStatistic(org.bukkit.Statistic.PLAYER_KILLS)));
         meta.lore(lore);
-        PlayerProfile profile = getProfile(
+        PlayerProfile profile = CustomInvFunctions.getProfile(
                 "https://textures.minecraft.net/texture/9dd36b762e0ebcae47c78308aaa2717aa77d14001ee40dcea863f5f195d23bd9");
         meta.setPlayerProfile(profile);
         item.setItemMeta(meta);
@@ -315,8 +339,9 @@ public class PlayerProfileManager implements Listener {
 
     private void sendPlayerBackOtherPlayersPage(Player playertoSend) {
         playertoSend.closeInventory(Reason.PLUGIN);
-        OtherPlayerAccounts otherPlayerAccounts = new OtherPlayerAccounts();
-        otherPlayerAccounts.openGUI(playertoSend);
+        //TODO: Fix this - Shows player is null when this version of the InventoryClickEvent is used.
+       /*OtherPlayerAccounts otherPlayerAccounts = new OtherPlayerAccounts();
+        otherPlayerAccounts.openGUI(playertoSend);*/
     }
 
     private void addPlayerItemStats(Player whoOpened) {
@@ -336,24 +361,4 @@ public class PlayerProfileManager implements Listener {
         playerWhoOpened.openInventory(inv);
     }
 
-    private static final UUID RANDOM_UUID = UUID.fromString("92864445-51c5-4c3b-9039-517c9927d1b4"); // We reuse the
-                                                                                                     // same "random"
-                                                                                                     // UUID all the
-                                                                                                     // time
-
-    private static PlayerProfile getProfile(String url) {
-        com.destroystokyo.paper.profile.PlayerProfile profile = (com.destroystokyo.paper.profile.PlayerProfile) Bukkit
-                .createProfile(RANDOM_UUID); // Get a new player profile
-        PlayerTextures textures = profile.getTextures();
-        URL urlObject;
-        try {
-            urlObject = URI.create(url).toURL(); // The URL to the skin, for example:
-                                      // https://textures.minecraft.net/texture/18813764b2abc94ec3c3bc67b9147c21be850cdf996679703157f4555997ea63a
-        } catch (MalformedURLException exception) {
-            throw new RuntimeException("Invalid URL", exception);
-        }
-        textures.setSkin(urlObject); // Set the skin of the player profile to the URL
-        profile.setTextures(textures); // Set the textures back to the profile
-        return profile;
-    }
 }

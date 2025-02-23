@@ -186,7 +186,7 @@ public class PlayerConfigManager {
     }
 
     public Double getBounty() {
-        return VaultHook.round(getConfig().getDouble(configPath + configPaths.CASH.getPath()), 2);
+        return VaultHook.round(getConfig().getDouble(configPath + configPaths.BOUNTYAMOUNT.getPath()), 2);
     }
     public Boolean isPlayerVisable() {
         return getConfig().getBoolean(configPath + configPaths.SETTINGS.getPath() + configPaths.SETTINGS_PLAYER_VISABLE.getPath());

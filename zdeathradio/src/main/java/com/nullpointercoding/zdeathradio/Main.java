@@ -39,6 +39,10 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (!checkForDecentHolograms()) {
+            return;
+        }
+        
         pl = this;
         registerEcon();
         createConfigFile();
@@ -179,4 +183,13 @@ public class Main extends JavaPlugin {
         return PlayerAccountFolder;
     }   
 
+    private boolean checkForDecentHolograms() {
+        if (getServer().getPluginManager().getPlugin("DecentHolograms") == null) {
+            getLogger().severe("DecentHolograms not found! This plugin is required.");
+            getLogger().severe("Download it from: https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/");
+            getServer().getPluginManager().disablePlugin(this);
+            return false;
+        }
+        return true;
+    }
 }

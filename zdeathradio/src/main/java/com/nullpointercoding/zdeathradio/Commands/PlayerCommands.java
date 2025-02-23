@@ -1,6 +1,5 @@
 package com.nullpointercoding.zdeathradio.Commands;
 
-import java.io.Console;
 import java.util.List;
 
 import org.bukkit.command.Command;

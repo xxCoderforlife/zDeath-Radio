@@ -12,13 +12,10 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
 import com.nullpointercoding.zdeathradio.Main;
-import com.nullpointercoding.zdeathradio.Zombies.ZombieGC;
-
 import net.kyori.adventure.text.Component;
 
 public class SysCommands implements TabExecutor {
 
-    private Main plugin = Main.getInstance();
     private final List<String> COMMANDS = Arrays.asList("reload", "help", "killall", "stopgc", "startgc");
 
     @Override
@@ -50,11 +47,11 @@ public class SysCommands implements TabExecutor {
                     player.sendMessage(Component.text("All monsters have been removed"));
                 }
                 if (args[0].equalsIgnoreCase("stopgc")) {
-                    plugin.getZombieGC().stopGC();
+                    Main.getZombieGC().stopGC();
                     player.sendMessage(Component.text("Stopping Zombie Garbage Collection"));
                 }
                 if (args[0].equalsIgnoreCase("startgc")) {
-                    plugin.getZombieGC().startGC();
+                    Main.getZombieGC().startGC();
                     player.sendMessage(Component.text("Starting Zombie Garbage Collection"));
                 }
             }
